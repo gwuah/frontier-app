@@ -5,6 +5,7 @@ const jobApplicationSchema = Joi.object<JobApplication>({
     firstname: Joi.string().required(),
     lastname: Joi.string().required(),
     phone: Joi.string().required(),
+    email: Joi.string().required(),    
     location: Joi.string().required(),
     linkedin: Joi.string().required(),
     resume: Joi.string().required(),    

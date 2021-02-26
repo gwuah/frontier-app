@@ -5,6 +5,8 @@ This repository contains a solution for the test described here https://github.c
 # Todo
 
 - Delete yarn.lock and install with npm
+- Download resume and upload
+- Select location from dropdown
 
 # How to setup
 

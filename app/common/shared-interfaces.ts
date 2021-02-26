@@ -5,6 +5,7 @@ export interface JobApplication {
     lastname: string
     phone: string
     location: string
+    email: string;
     linkedin: string
     resume: string
 }
