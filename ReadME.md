@@ -2,14 +2,22 @@
 
 This repository contains a solution for the test described here https://github.com/BeFrontier/frontier-rpa-exercise/blob/master/README.md
 
-# How to setup
+## Contents
+
+- [Setup](#setup)
+- [Testing](#testing)
+- [Todo](#todo)
+- [Asynchronous Service](#asynchronous-service)
+- [Endpoints](#endpoints)
+
+# Setup
 
 - Clone project from github `git clone https://github.com/gwuah/frontier-app.git`
 - Install all dependencies by running `npm install`
 - Create a copy of the `.env.sample` in the root repository and use values that suit you.
 - Start project by running `npm start`
 
-# How to Test
+# Testing
 
 - Run `npm test`
 
@@ -18,6 +26,14 @@ This repository contains a solution for the test described here https://github.c
 - Delete yarn.lock and install with npm
 - Download resume and upload
 - Select location from dropdown
+- Create selector object instead of hardcoding
+- Create tmp folder and download
+- GenerateUnique file names
+- Type download file function (the promisses)
+- Add timeout
+- Refactor Asynchronous Implementation to use callbacks
+- refactor ts ignore
+- refactor waitforfunc callback
 
 # Asynchronous Service
 
@@ -30,3 +46,5 @@ We have 2 main ways of reaching the user, their email and their phone number.
 It's much more easier to send an email than to send a phone number, so we'll fire an email contain a status response.
 
 To use the asynchronous service, post the form data to the `/applications/async` endpoint, after some seconds, you'd recieve an email.
+
+# Endpoints
