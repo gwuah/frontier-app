@@ -1,5 +1,5 @@
 import Joi from "joi"
-import { JobApplication } from "./common/shared-interfaces";
+import { JobApplication } from "./shared-interfaces";
 
 const jobApplicationSchema = Joi.object<JobApplication>({
     firstname: Joi.string().required(),

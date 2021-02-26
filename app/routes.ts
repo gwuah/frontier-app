@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import {validateJobApplication} from "./validator";
+import {validateJobApplication} from "./common/validator";
 import {submitApplication} from "./services";
 
 export const applicationRouter = express.Router();
@@ -13,7 +13,7 @@ applicationRouter.post("/", async (req: Request, res: Response) => {
         })
     }
 
-    const serviceResult = submitApplication(validationResult.value)
+    const serviceResult = await submitApplication(validationResult.value)
     if (serviceResult.error) {
         return res.status(serviceResult.code).json({
             status: false,

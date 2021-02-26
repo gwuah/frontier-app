@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "rimraf build && npm run build && node build/index.js",
-    "dev": "nodemon index.ts",
+    "dev": "nodemon app/index.ts",
     "build": "tsc --project ./",
     "test": "jest"
   },
@@ -22,7 +22,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "4.17.1",
-    "joi": "^17.4.0"
+    "joi": "^17.4.0",
+    "puppeteer": "^8.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",

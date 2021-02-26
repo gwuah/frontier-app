@@ -12,3 +12,9 @@ This repository contains a solution for the test described here https://github.c
 - Clone project from github `git clone https://github.com/gwuah/frontier-app.git`
 - Install all dependencies by running `npm install`
 - Start project by running `npm start`
+
+# How to Test
+
+- Run `npm test`
+
+# Asynchronous Service

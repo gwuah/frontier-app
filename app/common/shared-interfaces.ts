@@ -13,3 +13,8 @@ export interface ServiceResponse {
     error: boolean
     code: number
 }
+
+
+export interface RoboResponse {
+    error: boolean
+}
