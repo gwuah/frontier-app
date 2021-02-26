@@ -1,0 +1,35 @@
+{
+  "name": "interview",
+  "version": "1.0.0",
+  "description": "frontier interview application",
+  "main": "index.js",
+  "scripts": {
+    "start": "rimraf build && npm run build && node build/index.js",
+    "dev": "nodemon index.ts",
+    "build": "tsc --project ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gwuah/frontier-app.git"
+  },
+  "author": "gwuah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gwuah/frontier-app/issues"
+  },
+  "homepage": "https://github.com/gwuah/frontier-app#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "4.17.1",
+    "joi": "^17.4.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.10",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.31",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.2"
+  }
+}
