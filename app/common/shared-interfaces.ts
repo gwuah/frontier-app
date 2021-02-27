@@ -8,6 +8,10 @@ export interface JobApplication {
     resume: string
 }
 
+export interface AsyncJobApplication extends JobApplication {
+    callback_url: string
+}
+
 export interface ServiceResponse {
     error: boolean
     code: number
