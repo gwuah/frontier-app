@@ -3,6 +3,10 @@ import {validateJobApplication} from "../common/validator";
 import {submitApplication} from "../services";
 export const applicationsRouter = express.Router();
 
+function timeoutResponseSent(res: Response):boolean {
+    return res.get("timeout-response-sent") == "true"
+}
+
 applicationsRouter.post("/sync", async (req: Request, res: Response) => {
     const validationResult = validateJobApplication(req.body, false)
     if (validationResult.error) {
@@ -13,17 +17,19 @@ applicationsRouter.post("/sync", async (req: Request, res: Response) => {
     }
 
     const serviceResult = await submitApplication(validationResult.value)
-    if (serviceResult.error) {
+    if (serviceResult.error && !timeoutResponseSent(res)) {
         return res.status(serviceResult.code).json({
             status: false,
             message: "request failed"
         })
     }
 
-    res.status(serviceResult.code).json({
-        status: true,
-        message: "application submitted sucessfully"
-    })
+    if (!timeoutResponseSent(res)) {
+        res.status(serviceResult.code).json({
+            status: true,
+            message: "application submitted sucessfully"
+        })
+    }
 });
 
 applicationsRouter.post("/async", async (req: Request, res: Response) => {
@@ -36,15 +42,17 @@ applicationsRouter.post("/async", async (req: Request, res: Response) => {
     }
 
     const serviceResult = await submitApplication(validationResult.value)
-    if (serviceResult.error) {
+    if (serviceResult.error && !!timeoutResponseSent(res)) {
         return res.status(serviceResult.code).json({
             status: false,
             message: "request failed"
         })
     }
 
-    res.status(serviceResult.code).json({
-        status: true,
-        message: "application submitted sucessfully"
-    })
+    if (!timeoutResponseSent(res)) {
+        res.status(serviceResult.code).json({
+            status: true,
+            message: "application queued"
+        })
+    }
 });
