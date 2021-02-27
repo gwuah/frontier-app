@@ -22,7 +22,7 @@ applicationsRouter.post("/sync", async (req: Request, res: Response) => {
     try {
         const serviceResult = await submitApplication({
             data: validationResult.value,
-            slowMo: 0,
+            slowMo: 20,
             headless: false,
         })
         if (serviceResult.error && !timeoutResponseSent(res)) {

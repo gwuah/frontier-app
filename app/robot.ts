@@ -42,10 +42,9 @@ const config: {
 
 const typeLocation = (page: puppeteer.Page) => async (locationSelector: string, optionSelector: string, location: string) => {
   await page.click(locationSelector)
-  await page.keyboard.type(location)
-  // await page.waitForSelector("div[class='sc-ezrdKe kOQsbC']")
+  await page.keyboard.type(location, {delay: 300})
   await page.waitForSelector(optionSelector)
-  await page.keyboard.press('ArrowDown')
+  await page.click("#root > main > div > div > section > label:nth-child(6) > div.sc-ezrdKe.kOQsbC > div:nth-child(1)", {delay: 800})
   await page.keyboard.press('Enter')
 }
 

@@ -21,7 +21,7 @@ export async function jobApplicationWorker(job: Queue.Job<AsyncJobApplication>, 
     try {
       const serviceResult = await submitApplication({
         data: job.data,
-        slowMo: 0,
+        slowMo: 20,
         headless: false,
       })
       if (serviceResult.error) {
