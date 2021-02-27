@@ -1,6 +1,9 @@
 import express, { Request, Response } from "express";
 import {validateJobApplication} from "../common/validator";
 import {submitApplication} from "../services";
+import queue from "../queue"
+
+const queueInstance = queue()
 export const applicationsRouter = express.Router();
 
 function timeoutResponseSent(res: Response):boolean {
@@ -16,18 +19,26 @@ applicationsRouter.post("/sync", async (req: Request, res: Response) => {
         })
     }
 
-    const serviceResult = await submitApplication(validationResult.value)
-    if (serviceResult.error && !timeoutResponseSent(res)) {
-        return res.status(serviceResult.code).json({
-            status: false,
-            message: "request failed"
-        })
-    }
+    try {
+        const serviceResult = await submitApplication(validationResult.value)
+        if (serviceResult.error && !timeoutResponseSent(res)) {
+            return res.status(serviceResult.code).json({
+                status: false,
+                message: "request failed"
+            })
+        }
 
-    if (!timeoutResponseSent(res)) {
-        res.status(serviceResult.code).json({
-            status: true,
-            message: "application submitted sucessfully"
+        if (!timeoutResponseSent(res)) {
+            res.status(serviceResult.code).json({
+                status: true,
+                message: "application submitted sucessfully"
+            })
+        }
+    
+    } catch (error) {
+        return res.status(400).json({
+            status: false,
+            message: "requested failed"
         })
     }
 });
@@ -40,17 +51,11 @@ applicationsRouter.post("/async", async (req: Request, res: Response) => {
             message: "validation failed, refer to docs"
         })
     }
-
-    const serviceResult = await submitApplication(validationResult.value)
-    if (serviceResult.error && !!timeoutResponseSent(res)) {
-        return res.status(serviceResult.code).json({
-            status: false,
-            message: "request failed"
-        })
-    }
+    
+    queueInstance.getApplicationQueue().createJob(req.body).save()
 
     if (!timeoutResponseSent(res)) {
-        res.status(serviceResult.code).json({
+        res.status(200).json({
             status: true,
             message: "application queued"
         })

@@ -4,11 +4,16 @@ This repository contains a solution for the test described here https://github.c
 
 ## Contents
 
+- [Requirements](#requirements)
 - [Setup](#setup)
 - [Testing](#testing)
-- [Todo](#todo)
 - [Asynchronous Service](#asynchronous-service)
 - [Endpoints](#endpoints)
+
+# Requirements
+
+- Redis
+- NodeJS
 
 # Setup
 
@@ -20,11 +25,6 @@ This repository contains a solution for the test described here https://github.c
 # Testing
 
 - Run `npm test`
-
-# Todo
-
-- Add timeout
-- Handle errors
 
 # Asynchronous Service
 
@@ -96,6 +96,6 @@ For the asynchronous endpoint
 ```
 {
     "status": true,
-    "message": "application submitted sucessfully"
+    "message": "application queued"
 }
 ```
