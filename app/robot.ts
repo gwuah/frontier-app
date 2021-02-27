@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer"
-import { JobApplication, RoboResponse } from "./common/shared-interfaces";
+import { RoboResponse, RoboConfig } from "./common/shared-interfaces";
 import { generateFileName, downloadFile } from "./common/utils";
 
 const config: {
@@ -58,8 +58,9 @@ const uploadFile = (page: puppeteer.Page) => async (fileSelector: string, fileUr
   await page.waitForFunction(() => !document.querySelector("div")?.innerText.includes("Upload a file from this device"));
 }
 
-async function roboSumbit(data: JobApplication): Promise<RoboResponse> {
-  const browser = await puppeteer.launch({ headless: false, slowMo: 10 })
+async function roboSumbit(params: RoboConfig ): Promise<void> {
+  const {data} = params
+  const browser = await puppeteer.launch({ headless: params.headless, slowMo: params.slowMo })
   const page = await browser.newPage()
 
   await page.setDefaultNavigationTimeout(0);
@@ -82,11 +83,6 @@ async function roboSumbit(data: JobApplication): Promise<RoboResponse> {
   await page.click(config.doneBtn)
   await page.waitForFunction(() => document.querySelector("h1")?.innerText.includes("Your application is on its way!"));
   await browser.close();
-
-  return {
-    error: false
-  }
-
 }
 
 export default roboSumbit

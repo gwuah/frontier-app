@@ -20,7 +20,11 @@ applicationsRouter.post("/sync", async (req: Request, res: Response) => {
     }
 
     try {
-        const serviceResult = await submitApplication(validationResult.value)
+        const serviceResult = await submitApplication({
+            data: validationResult.value,
+            slowMo: 0,
+            headless: false,
+        })
         if (serviceResult.error && !timeoutResponseSent(res)) {
             return res.status(serviceResult.code).json({
                 status: false,

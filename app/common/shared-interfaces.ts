@@ -20,3 +20,9 @@ export interface ServiceResponse {
 export interface RoboResponse {
     error: boolean
 }
+
+export interface RoboConfig {
+    data: JobApplication
+    headless: boolean, 
+    slowMo: number
+  }
