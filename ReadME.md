@@ -31,7 +31,7 @@ This repository contains a solution for the test described here https://github.c
 The synchronous approach requires using Pupeteer to load the page, fill in the data and submit. That takes alot of time and results in poor UX.
 Therefore we'll implement an asynchronous service that provides a much more better user experience.
 
-For the asynchronous version, we don't run the robot synchronously. rather, we'd queue the job application that came in and have a background worker process the application. Once we are done processing the application, we alert the API user with the result of the application.
+For the asynchronous version, we don't run the robot synchronously. rather, we queue the job application that came in and have a background worker process the application. Once we are done processing the application, we alert the API user with the result of the application.
 
 How do we alert the API user? Through a callback(webhook)!
 We make a post request to the callback_url they'll provide in the request.
@@ -45,7 +45,7 @@ For the synchronous endpoint
 
 #### Route
 
-`/application/sync`
+`/applications/sync`
 
 #### Params
 
@@ -65,8 +65,8 @@ For the synchronous endpoint
 
 ```
 {
-    "status": true,
-    "message": "application submitted sucessfully"
+  "status": true,
+  "message": "application submitted sucessfully"
 }
 ```
 
@@ -74,7 +74,7 @@ For the asynchronous endpoint
 
 #### Route
 
-`/application/async`
+`/applications/async`
 
 #### Params
 
@@ -95,7 +95,7 @@ For the asynchronous endpoint
 
 ```
 {
-    "status": true,
-    "message": "application queued"
+  "status": true,
+  "message": "application queued"
 }
 ```
