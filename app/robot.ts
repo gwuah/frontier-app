@@ -1,56 +1,91 @@
-
 import puppeteer from "puppeteer"
 import { JobApplication, RoboResponse } from "./common/shared-interfaces";
+import { generateFileName, downloadFile } from "./common/utils";
 
-async function roboSumbit(data: JobApplication):Promise<RoboResponse> {
+const config: {
+  url: string;
+
+  applyBtn: string;
+  reviewBtn: string;
+  resumeBtn: string;
+  doneBtn: string;
+
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  location: string;
+  linkedin: string;
+
+
+  file: string
+  option: string;
+} = {
+  url: "https://frontier.jobs/jobs/190562",
+
+  applyBtn: "a[href='/jobs/190562/apply']",
+  reviewBtn: "a[href='/jobs/190562/apply/review']",
+  resumeBtn: "a[href='/jobs/190562/apply/resume']",
+  doneBtn: "a[href='/jobs/190562/apply/done']",
+
+  firstname: "input[name='fullname']",
+  lastname: "input[name='lastname']",
+  email: "input[name='email']",
+  phone: "input[name='phoneno']",
+  location: "input[name='location']",
+  linkedin: "input[name='linkedin']",
+
+  file: "input[type='file']",
+  option: "div[role='option']"
+
+}
+
+const typeLocation = (page: puppeteer.Page) => async (locationSelector: string, optionSelector: string, location: string) => {
+  await page.click(locationSelector)
+  await page.keyboard.type(location)
+  // await page.waitForSelector("div[class='sc-ezrdKe kOQsbC']")
+  await page.waitForSelector(optionSelector)
+  await page.keyboard.press('ArrowDown')
+  await page.keyboard.press('Enter')
+}
+
+const uploadFile = (page: puppeteer.Page) => async (fileSelector: string, fileUrl: string) => {
+  const filePath = generateFileName(fileUrl)
+  await downloadFile(fileUrl, filePath)
+  const resumeUploadInput = await page.$(fileSelector)
+  await resumeUploadInput?.uploadFile(filePath as string)
+
+  await page.waitForFunction(() => !document.querySelector("div")?.innerText.includes("Upload a file from this device"));
+}
+
+async function roboSumbit(data: JobApplication): Promise<RoboResponse> {
   const browser = await puppeteer.launch({ headless: false, slowMo: 10 })
   const page = await browser.newPage()
+
   await page.setDefaultNavigationTimeout(0);
   await page.setDefaultTimeout(0)
+  await page.goto(config.url)
+  await page.waitForSelector(config.applyBtn)
+  await page.click(config.applyBtn)
+  await page.waitForSelector(config.firstname)
+  await page.type(config.firstname, data.firstname)
+  await page.type(config.lastname, data.lastname)
+  await page.type(config.email, data.email)
+  await page.type(config.phone, data.phone)
+  await typeLocation(page)(config.location, config.option, data.location)
+  await page.type(config.linkedin, data.linkedin)
+  await page.click(config.resumeBtn)
+  await page.waitForSelector(config.file)
+  await uploadFile(page)(config.file, data.resume)
+  await page.click(config.reviewBtn)
+  await page.waitForSelector(config.doneBtn)
+  await page.click(config.doneBtn)
+  await page.waitForFunction(() => document.querySelector("h1")?.innerText.includes("Your application is on its way!"));
+  await browser.close();
 
-  console.log("visiting app")
-  await page.goto("https://frontier.jobs/jobs/190562")
-
-  console.log("waiting for apply button")
-  await page.waitForSelector("a[href='/jobs/190562/apply']")
-
-  console.log("clicking on apply button")
-  await page.click("a[href='/jobs/190562/apply']")
-  await page.waitForSelector("input[name='fullname']")
-  await page.type("input[name='fullname']", data.firstname)
-  await page.type("input[name='lastname']", data.lastname)
-  await page.type("input[name='email']", data.email)
-  await page.type("input[name='phoneno']", data.phone)
-  await page.type("input[name='location']", data.location)
-  await page.type("input[name='linkedin']", data.linkedin)
-
-  console.log("go to resume page")
-  await page.click("a[href='/jobs/190562/apply/resume']")
-  await page.waitForSelector("input[type='file']")
-
-  console.log("uploading file")
-  const resumeUploadInput = await page.$("input[type='file']")
-  await resumeUploadInput?.uploadFile("../assets/resume.docx")
-
-
-  
-
-  // await page.type('#pass', password)
-  // await page.waitForSelector('#support-reference')
-  // await page.waitForSelector('#shortCutLinks > span:nth-child(3)')
-  // await page.click('#shortCutLinks > span:nth-child(3)')
-  // await page.waitForSelector('#tableSwitcherButton_2')
-  // await page.click('#tableSwitcherButton_2')
-  // await page.waitForSelector('#paymentHistoryTable_limitSelectionDropdown_dropId > div.dropdown-selection-white.dropdown-h4 > div > div')
-  // const results = await page.evaluate(() => {
-  //   return document.querySelectorAll('.tableRow')
-  // })
-  // console.log("These are results", results)
-//  await browser.close();
-
- return {
-   error: false
- }
+  return {
+    error: false
+  }
 
 }
 

@@ -24,16 +24,9 @@ This repository contains a solution for the test described here https://github.c
 # Todo
 
 - Delete yarn.lock and install with npm
-- Download resume and upload
-- Select location from dropdown
-- Create selector object instead of hardcoding
 - Create tmp folder and download
-- GenerateUnique file names
-- Type download file function (the promisses)
 - Add timeout
-- Refactor Asynchronous Implementation to use callbacks
-- refactor ts ignore
-- refactor waitforfunc callback
+- Handle errors
 
 # Asynchronous Service
 

@@ -1,5 +1,3 @@
-import { bool, boolean } from "joi"
-
 export interface JobApplication {
     firstname: string
     lastname: string
@@ -14,7 +12,6 @@ export interface ServiceResponse {
     error: boolean
     code: number
 }
-
 
 export interface RoboResponse {
     error: boolean
